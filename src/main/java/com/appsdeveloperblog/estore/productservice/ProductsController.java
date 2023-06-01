@@ -1,9 +1,12 @@
 package com.appsdeveloperblog.estore.productservice;
 
+import com.appsdeveloperblog.estore.productservice.command.CreateProductCommand;
 import com.appsdeveloperblog.estore.productservice.rest.CreateProductRestModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
@@ -14,6 +17,10 @@ public class ProductsController {
 
     @PostMapping
     public String createProduct(@RequestBody CreateProductRestModel createProductRestModel){
+        CreateProductCommand createProductCommand = CreateProductCommand.builder().price(createProductRestModel.getPrice())
+                .quantity(createProductRestModel.getQuantity())
+                .title(createProductRestModel.getTitle())
+                .productId(UUID.randomUUID().toString()).build();
 
         return "Http post method "+createProductRestModel.getTitle();
     }

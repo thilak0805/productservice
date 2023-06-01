@@ -2,6 +2,7 @@ package com.appsdeveloperblog.estore.productservice;
 
 import com.appsdeveloperblog.estore.productservice.command.CreateProductCommand;
 import com.appsdeveloperblog.estore.productservice.rest.CreateProductRestModel;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
@@ -15,13 +16,27 @@ public class ProductsController {
     @Autowired
     private Environment env;
 
+    private final CommandGateway commandGateway;
+
+    @Autowired
+    public ProductsController(Environment env, CommandGateway commandGateway){
+        this.env = env;
+        this.commandGateway = commandGateway;
+    }
+
     @PostMapping
     public String createProduct(@RequestBody CreateProductRestModel createProductRestModel){
+        String returnValue = "";
         CreateProductCommand createProductCommand = CreateProductCommand.builder().price(createProductRestModel.getPrice())
                 .quantity(createProductRestModel.getQuantity())
                 .title(createProductRestModel.getTitle())
                 .productId(UUID.randomUUID().toString()).build();
-
+        try {               //commandobj           routes commandobj to
+            //commandGateway------------>commandbus--------------------> CommandHandler
+            returnValue = commandGateway.sendAndWait(createProductCommand);
+        }catch(Exception e){
+           returnValue = e.getLocalizedMessage();
+        }
         return "Http post method "+createProductRestModel.getTitle();
     }
 

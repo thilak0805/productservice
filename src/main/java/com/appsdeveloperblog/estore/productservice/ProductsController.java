@@ -37,7 +37,8 @@ public class ProductsController {
         }catch(Exception e){
            returnValue = e.getLocalizedMessage();
         }
-        return "Http post method "+createProductRestModel.getTitle();
+       // return "Http post method "+createProductRestModel.getTitle();
+        return returnValue;
     }
 
 

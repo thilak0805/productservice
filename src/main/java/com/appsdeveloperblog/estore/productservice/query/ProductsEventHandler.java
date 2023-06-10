@@ -17,8 +17,19 @@ public class ProductsEventHandler {
 
     @EventHandler
     public void on(ProductCreatedEvent event){
+        System.out.println("inside producteventhandler method===="+event.getProductId());
+
         ProductEntity entity = new ProductEntity();
         BeanUtils.copyProperties(event, entity);
-        productRepository.save(entity);
+        System.out.println("before saving the entity");
+        try {
+            productRepository.save(entity);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        System.out.println("after saving the entity");
+
     }
+
+
 }

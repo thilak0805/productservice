@@ -44,7 +44,7 @@ public class ProductsCommandController {
 
 
     
-    @GetMapping
+    /*@GetMapping
     public String getProduct(){
         return "Http get method "+env.getProperty("local.server.port");
     }
@@ -57,5 +57,5 @@ public class ProductsCommandController {
     @DeleteMapping
     public String deleteProduct(){
         return "Http delete method";
-    }
+    }*/
 }

@@ -29,7 +29,7 @@ public class CreateProductCommandInterceptor implements MessageDispatchIntercept
         return (index, command)->{
             logger.info("intercepted command  :"+command.getPayloadType());
             CreateProductCommand createProductCommand = (CreateProductCommand) command.getPayload();
-            /*if(createProductCommand.getPrice().compareTo(BigDecimal.ZERO)<=0){
+          /*  if(createProductCommand.getPrice().compareTo(BigDecimal.ZERO)<=0){
                 throw new IllegalArgumentException("price cannot be less or equal than zero");
             }
             if(createProductCommand.getTitle()==null || createProductCommand.getTitle().isBlank()){

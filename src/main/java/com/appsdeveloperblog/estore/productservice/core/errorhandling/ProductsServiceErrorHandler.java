@@ -29,6 +29,7 @@ public class ProductsServiceErrorHandler {
 
     @ExceptionHandler(value={CommandExecutionException.class})
     public ResponseEntity<Object> handleCommandExecutionException(CommandExecutionException ex, WebRequest req){
+        System.out.println("inside handleCommandExecutionException ");
         ErrorMessage errorMessage = new ErrorMessage(new Date(), ex.getMessage());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }

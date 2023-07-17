@@ -35,8 +35,8 @@ public class ProductsEventHandler {
     }
 
     @ExceptionHandler(value = {Exception.class})
-    public void handle(Exception exception){
-
+    public void handle(Exception exception) throws Exception{
+        throw exception;
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})

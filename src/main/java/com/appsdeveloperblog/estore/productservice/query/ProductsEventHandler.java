@@ -8,6 +8,8 @@ import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ProcessingGroup("product-group")
 public class ProductsEventHandler {
+    Logger logger = LoggerFactory.getLogger(ProductsEventHandler.class);
     private final ProductRepository productRepository;
 
     public ProductsEventHandler(ProductRepository productRepository){
@@ -38,6 +41,7 @@ public class ProductsEventHandler {
 
     @EventHandler
     public void on(ProductReservedEvent productReservedEvent){
+        logger.info("Product Reserved Event is called for productId : "+productReservedEvent.getProductId() +" and orderId :"+productReservedEvent.getOrderId());
         ProductEntity productEntity = productRepository.findByProductId(productReservedEvent.getProductId());
         productEntity.setQuantity(productEntity.getQuantity()-productReservedEvent.getQuantity());
         productRepository.save(productEntity);

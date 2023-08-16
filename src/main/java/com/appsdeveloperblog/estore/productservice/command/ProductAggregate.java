@@ -8,13 +8,15 @@ import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 
 @Aggregate
 public class ProductAggregate {
-
+    Logger logger = LoggerFactory.getLogger(ProductAggregate.class);
     @AggregateIdentifier
     private String productId;
     private String title;
@@ -71,6 +73,7 @@ public class ProductAggregate {
 
     @EventSourcingHandler
     public void on(ProductReservedEvent productReservedEvent){
+        logger.info("productReservedEvent in eventsourcinghandler called====");
         this.quantity -= productReservedEvent.getQuantity();
     }
 }

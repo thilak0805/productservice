@@ -1,6 +1,7 @@
 package com.appsdeveloperblog.estore.productservice.command;
 
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
+import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productservice.core.events.ProductCreatedEvent;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
@@ -55,6 +56,21 @@ public class ProductAggregate {
         if(quantity<reserveProductCommand.getQuantity()){
             throw new IllegalArgumentException("Insufficient no. of items in the stock");
         }
+        //create a new instance of ProductReservedEvent
+        ProductReservedEvent productReservedEvent = new ProductReservedEvent()
+                .builder()
+                .orderId(reserveProductCommand.getOrderId())
+                .productId(reserveProductCommand.getProductId())
+                .quantity(reserveProductCommand.getQuantity())
+                .userId(reserveProductCommand.getUserId())
+                .build();
+        // call apply method to apply this event to aggregate
+        AggregateLifecycle.apply(productReservedEvent);
 
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservedEvent productReservedEvent){
+        this.quantity -= productReservedEvent.getQuantity();
     }
 }

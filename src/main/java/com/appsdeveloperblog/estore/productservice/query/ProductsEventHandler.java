@@ -6,9 +6,10 @@ import com.appsdeveloperblog.estore.productservice.core.events.ProductCreatedEve
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+
 
 @Component
 @ProcessingGroup("product-group")
@@ -28,18 +29,18 @@ public class ProductsEventHandler {
         System.out.println("before saving the entity");
         try {
             productRepository.save(entity);
-        }catch(Exception e){
+        }catch(IllegalArgumentException e){
             e.printStackTrace();
         }
         System.out.println("after saving the entity");
     }
 
-    @ExceptionHandler(value = {Exception.class})
+    @ExceptionHandler(resultType = Exception.class)
     public void handle(Exception exception) throws Exception{
         throw exception;
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ExceptionHandler(resultType = IllegalArgumentException.class)
     public void handle(IllegalArgumentException exception){
 
     }

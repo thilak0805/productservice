@@ -1,5 +1,6 @@
 package com.appsdeveloperblog.estore.productservice.query;
 
+import com.appsdeveloperblog.estore.core.events.ProductReservationCancelledEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productservice.core.data.ProductEntity;
 import com.appsdeveloperblog.estore.productservice.core.data.ProductRepository;
@@ -47,6 +48,15 @@ public class ProductsEventHandler {
         productRepository.save(productEntity);
     }
 
+    @EventHandler
+    public void on(ProductReservationCancelledEvent productReservationCancelledEvent){
+        ProductEntity currentlyStoredProduct = productRepository.findByProductId(productReservationCancelledEvent.getProductId());
+        int newQuantity = currentlyStoredProduct.getQuantity()+productReservationCancelledEvent.getQuantity();
+        currentlyStoredProduct.setQuantity(newQuantity);
+        productRepository.save(currentlyStoredProduct);
+
+    }
+
     @ExceptionHandler(resultType = Exception.class)
     public void handle(Exception exception) throws Exception{
         throw exception;
@@ -56,5 +66,6 @@ public class ProductsEventHandler {
     public void handle(IllegalArgumentException exception){
 
     }
+
 
 }

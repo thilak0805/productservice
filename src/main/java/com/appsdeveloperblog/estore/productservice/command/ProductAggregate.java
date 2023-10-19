@@ -16,7 +16,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
 
-@Aggregate
+@Aggregate(snapshotTriggerDefinition = "productSnapshotTriggerDefinition")
 public class ProductAggregate {
     Logger logger = LoggerFactory.getLogger(ProductAggregate.class);
     @AggregateIdentifier

@@ -8,6 +8,7 @@ import com.appsdeveloperblog.estore.productservice.core.events.ProductCreatedEve
 import org.axonframework.commandhandling.CommandExecutionException;
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,11 @@ public class ProductsEventHandler {
     @ExceptionHandler(resultType = IllegalArgumentException.class)
     public void handle(IllegalArgumentException exception){
 
+    }
+
+    @ResetHandler
+    public void reset(){
+        productRepository.deleteAll();
     }
 
 
